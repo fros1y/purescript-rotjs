@@ -48,3 +48,9 @@ exports.setDurationRaw = function(scheduler, duration) {
     return scheduler.setDuration(duration);
   };
 };
+
+exports.getTimeRaw = function(scheduler) {
+  return function() {
+    return scheduler.getTime();
+  };
+}
