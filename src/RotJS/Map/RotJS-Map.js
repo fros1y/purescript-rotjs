@@ -28,9 +28,9 @@ exports.buildDiggerRaw = function(xsize, ysize, config) {
   };
 };
 
-exports.buildUniformRaw = function(xsize, ysize) {
+exports.buildUniformRaw = function(xsize, ysize, config) {
   return function() {
-    var map = new ROT.Map.Uniform(xsize, ysize);
+    var map = new ROT.Map.Uniform(xsize, ysize, config);
     return mapExport(map);
   };
 };

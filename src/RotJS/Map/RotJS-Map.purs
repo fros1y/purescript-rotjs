@@ -2,7 +2,7 @@ module RotJS.Map  ( arena
                   , digger
                   , uniform
                   , rogue
-                  , DiggerConfig
+                  , MapGenConfig
                   , roomWidth
                   , roomHeight
                   , corridorLength
@@ -22,7 +22,7 @@ type Map = Array Int
 
 foreign import buildArenaRaw :: Fn2 Int Int (Map)
 foreign import buildDiggerRaw :: forall eff. Fn3 Int Int Foreign (Eff (rotrng :: Random.RNG | eff) Map)
-foreign import buildUniformRaw :: forall eff. Fn2 Int Int (Eff (rotrng :: Random.RNG | eff) Map)
+foreign import buildUniformRaw :: forall eff. Fn3 Int Int Foreign (Eff (rotrng :: Random.RNG | eff) Map)
 foreign import buildRogueRaw :: forall eff. Fn2 Int Int (Eff (rotrng :: Random.RNG | eff) Map)
 
 -- roomWidth – [min, max] room size
@@ -31,31 +31,34 @@ foreign import buildRogueRaw :: forall eff. Fn2 Int Int (Eff (rotrng :: Random.R
 -- dugPercentage – algorithm stops after this fraction of map area has been dug out; default = 0.2
 -- timeLimit – algorithm stops after this amount of milliseconds has passed
 
-foreign import data DiggerConfig :: *
+foreign import data MapGenConfig :: *
 
-roomWidth :: Option DiggerConfig (Maybe (Array Int))
-roomWidth = optional (opt "roomWidth")
+roomWidth :: Option MapGenConfig (Array Int)
+roomWidth = opt "roomWidth"
 
-roomHeight :: Option DiggerConfig (Maybe (Array Int))
-roomHeight = optional (opt "roomHeight")
+roomHeight :: Option MapGenConfig (Array Int)
+roomHeight = opt "roomHeight"
 
-corridorLength :: Option DiggerConfig (Maybe (Array Int))
-corridorLength = optional (opt "corridorLength")
+corridorLength :: Option MapGenConfig (Array Int)
+corridorLength = opt "corridorLength"
 
-dugPercentage :: Option DiggerConfig (Maybe Number)
-dugPercentage = optional (opt "dugPercentage")
+dugPercentage :: Option MapGenConfig Number
+dugPercentage = opt "dugPercentage"
 
-timeLimit :: Option DiggerConfig (Maybe Int)
-timeLimit = optional (opt "timeLimit")
+roomDugPercentage :: Option MapGenConfig Number
+roomDugPercentage = opt "roomDugPercentage"
+
+timeLimit :: Option MapGenConfig Int
+timeLimit = opt "timeLimit"
 
 arena:: Int -> Int -> Map
 arena = runFn2 buildArenaRaw
 
-digger :: forall eff. Int -> Int -> Options DiggerConfig -> Eff (rotrng :: Random.RNG | eff) Map
+digger :: forall eff. Int -> Int -> Options MapGenConfig -> Eff (rotrng :: Random.RNG | eff) Map
 digger x y opts = runFn3 buildDiggerRaw x y (options opts)
 
-uniform :: forall eff. Int -> Int -> Eff (rotrng :: Random.RNG | eff) Map
-uniform = runFn2 buildUniformRaw
+uniform :: forall eff. Int -> Int -> Options MapGenConfig -> Eff (rotrng :: Random.RNG | eff) Map
+uniform x y opts = runFn3 buildUniformRaw x y (options opts)
 
 rogue :: forall eff. Int -> Int -> Eff (rotrng :: Random.RNG | eff) Map
 rogue = runFn2 buildRogueRaw
