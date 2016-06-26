@@ -16,13 +16,12 @@ exports.newActionScheduler = function() {
   };
 };
 
-/*
 exports.newSpeedScheduler = function() {
   return function() {
     var scheduler = new ROT.Scheduler.Speed();
     return scheduler;
   };
-};*/
+};
 
 exports.removeRaw = function(scheduler, actor) {
   return function() {
@@ -32,6 +31,7 @@ exports.removeRaw = function(scheduler, actor) {
 
 exports.addRaw = function(scheduler, actor, repeat) {
   return function() {
+    actor.getSpeed = function() { return actor.speed; };
     scheduler.add(actor, repeat);
   };
 };
