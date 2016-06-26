@@ -2,9 +2,9 @@
 
 var ROT = require('rot-js');
 
-exports.initDisplay = function (dimensions) {
+exports.initDisplayRaw = function (config) {
   return function() {
-    var display = new ROT.Display(dimensions);
+    var display = new ROT.Display(config);
     document.body.appendChild(display.getContainer());
     return display;
   };
