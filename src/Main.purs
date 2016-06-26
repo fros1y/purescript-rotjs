@@ -9,6 +9,7 @@ import Control.Monad.Eff (Eff, forE)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Array ((!!))
 import Data.Maybe (Maybe(..))
+import Data.Options (Option(), Options(), optional, options, opt, (:=))
 
 
 -- main :: forall eff. Eff (console :: CONSOLE, scheduler :: Scheduler.SCHEDULING | eff) Unit
@@ -29,7 +30,7 @@ main = do
   -- log $ show $ MapGen.buildArena 10 20
   display <- Display.initDisplay Display.defaultConfiguration
   Display.draw display {x: 10, y: 20} "@" "#fff"
-  map <- (MapGen.digger 30 30)
+  map <- MapGen.digger 30 30 (MapGen.roomWidth := Just [2, 5])
   render display map 30 30
 --   schedule <- Scheduler.mkActionScheduler
 --   Scheduler.add schedule {id: 1, speed: 100} true

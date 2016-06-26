@@ -21,9 +21,9 @@ exports.buildArenaRaw = function (xsize, ysize) {
   };
 };
 
-exports.buildDiggerRaw = function(xsize, ysize) {
+exports.buildDiggerRaw = function(xsize, ysize, config) {
   return function() {
-    var map = new ROT.Map.Digger(xsize, ysize);
+    var map = new ROT.Map.Digger(xsize, ysize, config);
     return mapExport(map);
   };
 };
