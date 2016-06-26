@@ -31,8 +31,9 @@ main = do
   display <- Display.initDisplay (  Display.width := 40
                                 <>  Display.height := 40)
   Display.draw display {x: 10, y: 20} "@" "#fff"
+  --map <- MapGen.rogue 30 30
   map <- MapGen.digger 30 30 (MapGen.roomWidth := [2, 5])
-  render display map 30 30
+  render display map
 --   schedule <- Scheduler.mkActionScheduler
 --   Scheduler.add schedule {id: 1, speed: 100} true
 --   Scheduler.add schedule {id: 2, speed: 50} true
@@ -56,9 +57,11 @@ main = do
  --                      -> Int
  --                      -> Int
  --                      -> Eff ( tty :: Display.TTY | t) Unit
-render display map xsize ysize = do
+render display map = do
+  let xsize = map.width
+      ysize = map.height
   forE 0 xsize $ \x -> forE 0 ysize $ \y ->
-      let val = map !! (x * ysize + y) in
+      let val = map.grid !! (x * ysize + y) in
         case val of
           Nothing -> pure unit
           Just 0 -> Display.draw display {x: x, y: y} "." "#fff"

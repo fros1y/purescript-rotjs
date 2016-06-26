@@ -8,6 +8,10 @@ module RotJS.Map  ( arena
                   , corridorLength
                   , dugPercentage
                   , timeLimit
+                  , Door
+                  , Room
+                  , Corridor
+                  , Map
                   ) where
 
 import Prelude
@@ -18,7 +22,30 @@ import RotJS.RNG as Random
 import Data.Maybe (Maybe(..))
 import Data.Foreign (Foreign())
 
-type Map = Array Int
+type Door = {x :: Int, y :: Int }
+
+type Room = {
+              left :: Int,
+              top :: Int,
+              right :: Int,
+              bottom :: Int,
+              doors :: Array Door
+            }
+
+type Corridor = {
+    startX :: Int,
+    startY :: Int,
+    endX :: Int,
+    endY :: Int
+}
+
+type Map = {  width :: Int
+            , height :: Int
+            , grid :: Array Int
+            , rooms :: Array Room
+            , doors :: Array Door
+            , corridors :: Array Corridor
+          }
 
 foreign import buildArenaRaw :: Fn2 Int Int (Map)
 foreign import buildDiggerRaw :: forall eff. Fn3 Int Int Foreign (Eff (rotrng :: Random.RNG | eff) Map)
