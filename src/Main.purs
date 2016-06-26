@@ -28,9 +28,10 @@ main = do
   -- log (show percent)
   -- log (show normal)
   -- log $ show $ MapGen.buildArena 10 20
-  display <- Display.initDisplay Display.defaultConfiguration
+  display <- Display.initDisplay (  Display.width := 40
+                                <>  Display.height := 40)
   Display.draw display {x: 10, y: 20} "@" "#fff"
-  map <- MapGen.digger 30 30 (MapGen.roomWidth := Just [2, 5])
+  map <- MapGen.digger 30 30 (MapGen.roomWidth := [2, 5])
   render display map 30 30
 --   schedule <- Scheduler.mkActionScheduler
 --   Scheduler.add schedule {id: 1, speed: 100} true
