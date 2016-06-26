@@ -3,24 +3,18 @@
 var ROT = require('rot-js');
 
 exports.newSimpleScheduler = function() {
-  return function() {
     var scheduler = new ROT.Scheduler.Simple();
     return scheduler;
-  };
 };
 
 exports.newActionScheduler = function() {
-  return function() {
     var scheduler = new ROT.Scheduler.Action();
     return scheduler;
-  };
 };
 
 exports.newSpeedScheduler = function() {
-  return function() {
     var scheduler = new ROT.Scheduler.Speed();
     return scheduler;
-  };
 };
 
 exports.removeRaw = function(scheduler, actor) {
@@ -31,6 +25,7 @@ exports.removeRaw = function(scheduler, actor) {
 
 exports.addRaw = function(scheduler, actor, repeat) {
   return function() {
+    console.log(scheduler);
     actor.getSpeed = function() { return actor.speed; };
     scheduler.add(actor, repeat);
   };

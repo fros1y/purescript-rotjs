@@ -1,6 +1,23 @@
-module RotJS.Scheduler where
+module RotJS.Scheduler (
+      SimpleScheduler
+    , ActionScheduler
+    , SpeedScheduler
+    , SCHEDULING
+    , Actor
+    , mkSimpleScheduler
+    , mkSpeedScheduler
+    , mkActionScheduler
+    , class SimpleScheduling
+    , add
+    , remove
+    , next
+    , clear
+    , class ActionScheduling
+    , setDuration
+    )  where
 
 import Prelude
+import Base (add)
 import Control.Monad.Eff (Eff)
 import Data.Function.Uncurried (Fn2, runFn2, Fn3, runFn3)
 
@@ -54,6 +71,12 @@ instance speedScheduling :: SpeedScheduling SpeedScheduler
 
 mkSimpleScheduler :: forall eff. Eff (scheduling :: SCHEDULING | eff) SimpleScheduler
 mkSimpleScheduler = SimpleScheduler <$> newSimpleScheduler
+
+mkSpeedScheduler :: forall eff. Eff (scheduling :: SCHEDULING | eff) SpeedScheduler
+mkSpeedScheduler = SpeedScheduler <$> newSpeedScheduler
+
+mkActionScheduler :: forall eff. Eff (scheduling :: SCHEDULING | eff) ActionScheduler
+mkActionScheduler = ActionScheduler <$> newActionScheduler
 
 foreign import newSimpleScheduler :: forall eff. Eff (scheduling :: SCHEDULING | eff) SchedulerObject
 foreign import newActionScheduler :: forall eff. Eff (scheduling :: SCHEDULING | eff) SchedulerObject
