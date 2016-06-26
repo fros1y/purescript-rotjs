@@ -7,6 +7,9 @@ import RotJS.Map as MapGen
 import RotJS.RNG as Random
 import Control.Monad.Eff (Eff, forE)
 import Control.Monad.Eff.Console (CONSOLE, log)
+import Data.Array ((!!))
+import Data.Maybe (Maybe(..))
+
 
 -- main :: forall eff. Eff (console :: CONSOLE, scheduler :: Scheduler.SCHEDULING | eff) Unit
 main :: forall eff. Eff ( tty :: Display.TTY
@@ -17,16 +20,17 @@ main :: forall eff. Eff ( tty :: Display.TTY
                         ) Unit
 main = do
   Random.setSeed 1
-  uniform <- Random.getUniform
-  percent <- Random.getPercentage
-  normal <- Random.getNormal 3.0 0.1
-  log (show uniform)
-  log (show percent)
-  log (show normal)
-
+  -- uniform <- Random.getUniform
+  -- percent <- Random.getPercentage
+  -- normal <- Random.getNormal 3.0 0.1
+  -- log (show uniform)
+  -- log (show percent)
+  -- log (show normal)
   -- log $ show $ MapGen.buildArena 10 20
---   display <- Display.initDisplay Display.defaultConfiguration
---   Display.draw display {x: 10, y: 20} "@" "#fff"
+  display <- Display.initDisplay Display.defaultConfiguration
+  Display.draw display {x: 10, y: 20} "@" "#fff"
+  map <- (MapGen.digger 30 30)
+  render display map 30 30
 --   schedule <- Scheduler.mkActionScheduler
 --   Scheduler.add schedule {id: 1, speed: 100} true
 --   Scheduler.add schedule {id: 2, speed: 50} true
@@ -44,3 +48,17 @@ main = do
 --   time <- Scheduler.getTime schedule
 --   Scheduler.setDuration schedule (if cycle == 3 then 5 else 1)
 --   log $ "At cycle: " <> (show cycle) <> ": ID= " <> (show (out.id)) <> "(time is " <> (show time) <> ")"
+
+ -- render :: forall t.  Display.Display
+ --                      -> Array Int
+ --                      -> Int
+ --                      -> Int
+ --                      -> Eff ( tty :: Display.TTY | t) Unit
+render display map xsize ysize = do
+  forE 0 xsize $ \x -> forE 0 ysize $ \y ->
+      let val = map !! (x * ysize + y) in
+        case val of
+          Nothing -> pure unit
+          Just 0 -> Display.draw display {x: x, y: y} "." "#fff"
+          Just 1 -> Display.draw display {x: x, y: y} "#" "#fff"
+          Just v -> Display.draw display {x: x, y: y} (show v) "#f00"
