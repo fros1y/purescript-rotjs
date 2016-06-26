@@ -25,7 +25,6 @@ exports.removeRaw = function(scheduler, actor) {
 
 exports.addRaw = function(scheduler, actor, repeat) {
   return function() {
-    console.log(scheduler);
     actor.getSpeed = function() { return actor.speed; };
     scheduler.add(actor, repeat);
   };
