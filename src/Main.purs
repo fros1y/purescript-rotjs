@@ -5,6 +5,7 @@ import RotJS.Display as Display
 import RotJS.Scheduler as Scheduler
 import RotJS.Map as MapGen
 import RotJS.RNG as Random
+import RotJS.FOV as FOV
 import UI as UI
 import Control.Monad.Eff (Eff, forE)
 import Control.Monad.Eff.Console (CONSOLE, log)
