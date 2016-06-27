@@ -5,7 +5,7 @@ var ROT = require('rot-js');
 exports.initDisplayRaw = function (config) {
   return function() {
     var display = new ROT.Display(config);
-    document.body.appendChild(display.getContainer());
+    document.body.appendChild(display.getContainer()); // FIXME
     return display;
   };
 };

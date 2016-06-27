@@ -53,9 +53,6 @@ var mapExport = function (map) {
       }
     }
 
-
-
-    console.log(mapStorage);
     return mapStorage;
   }
 

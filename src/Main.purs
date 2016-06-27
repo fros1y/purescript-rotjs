@@ -21,31 +21,15 @@ main :: forall eff. Eff ( tty :: Display.TTY
                         ) Unit
 main = do
   Random.setSeed 1
-  -- uniform <- Random.getUniform
-  -- percent <- Random.getPercentage
-  -- normal <- Random.getNormal 3.0 0.1
-  -- log (show uniform)
-  -- log (show percent)
-  -- log (show normal)
-  -- log $ show $ MapGen.buildArena 10 20
   display <- Display.initDisplay (  Display.width := 40
                                 <>  Display.height := 40)
-  Display.draw display {x: 10, y: 20} "@" "#fff"
-  --map <- MapGen.rogue 30 30
+  schedule <- Scheduler.mkActionScheduler
   map <- MapGen.digger 30 30 (MapGen.roomWidth := [2, 5])
   render display map
---   schedule <- Scheduler.mkActionScheduler
---   Scheduler.add schedule {id: 1, speed: 100} true
---   Scheduler.add schedule {id: 2, speed: 50} true
---   Scheduler.add schedule {id: 3, speed: 25} true
---   forE 0 20 (loop schedule)
---
---
--- loop :: forall eff. Scheduler.ActionScheduler -> Int -> Eff ( tty :: Display.TTY
---                         , scheduling :: Scheduler.SCHEDULING
---                         , console :: CONSOLE
---                         | eff
---                         ) Unit
+  Display.draw display {x: 10, y: 20} "@" "#fff"
+  Scheduler.add schedule {id: 1, speed: 100} true
+
+  
 -- loop schedule cycle = do
 --   out <- Scheduler.next schedule
 --   time <- Scheduler.getTime schedule
