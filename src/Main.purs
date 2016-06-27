@@ -34,6 +34,7 @@ type GameState = {
 
 type Delta = {x :: Int, y :: Int}
 
+movePlayer :: Delta -> Player -> Player
 movePlayer delta player = {x: player.x + delta.x, y: player.y + delta.y}
 
 gameLogic :: Delta -> Eff _ GameState -> Eff _ GameState
@@ -41,35 +42,39 @@ gameLogic delta gameState = do
   state <- gameState
   pure (state {player = movePlayer delta state.player})
 
+calcDelta :: Boolean -> Boolean -> Boolean -> Boolean -> Delta
 calcDelta true _ _ _ = {x: -1, y: 0}
 calcDelta _ true _ _ = {x: 1, y: 0}
 calcDelta _ _ true _ = {x: 0, y: -1}
 calcDelta _ _ _ true = {x: 0, y: 1}
 calcDelta _ _ _ _ = {x: 0, y: 0}
 
+mkInitialState :: MapGen.Map -> Eff _ GameState
+mkInitialState map = do
+  pure {  turnCount: 0,
+          player: {
+            x: 10,
+            y: 10
+            },
+          level: map
+        }
+
 main :: Eff _ Unit
 main = UI.onDOMContentLoaded do
+
   Random.setSeed 1
-  display <- Display.initDisplay (  Display.width := 40
+  display <- Display.initDisplay (  Display.width := 80
                                  <>  Display.height := 40)
   map <- MapGen.digger 30 30 (MapGen.roomWidth := [2, 5])
+
   frames <- animationFrame
   leftInput <- dropRepeats <$> keyPressed leftKeyCode
   rightInput <- dropRepeats <$> keyPressed rightKeyCode
   upInput <- dropRepeats <$> keyPressed upKeyCode
   downInput <- dropRepeats <$> keyPressed downKeyCode
+
   let delta = calcDelta <$> leftInput <*> rightInput <*> upInput <*> downInput
       game = foldp gameLogic initialState delta
-      render gameStateE = do
-        gameState <- gameStateE
-        UI.renderMap display gameState.level
-        UI.renderPlayer display gameState.player
-      initialState = pure {
-        turnCount: 0,
-        player: {
-          x: 10,
-          y: 10
-        },
-        level: map
-      }
-  runSignal (render <$> game)
+      initialState = mkInitialState map
+
+  runSignal ( (UI.render display) <$> game)

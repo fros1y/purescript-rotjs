@@ -23,3 +23,8 @@ renderMap display map = do
           Just 0 -> Display.draw display {x: x, y: y} "." "#fff"
           Just 1 -> Display.draw display {x: x, y: y} "#" "#fff"
           Just v -> Display.draw display {x: x, y: y} (show v) "#f00"
+
+render display gameStateE = do
+  gameState <- gameStateE
+  renderMap display gameState.level
+  renderPlayer display gameState.player
