@@ -5,6 +5,7 @@ import RotJS.Display as Display
 import RotJS.Scheduler as Scheduler
 import RotJS.Map as MapGen
 import RotJS.RNG as Random
+import UI as UI
 import Control.Monad.Eff (Eff, forE)
 import Control.Monad.Eff.Console (CONSOLE, log)
 import Data.Array ((!!))
@@ -12,42 +13,63 @@ import Data.Maybe (Maybe(..))
 import Data.Options (Option(), Options(), optional, options, opt, (:=))
 
 
--- main :: forall eff. Eff (console :: CONSOLE, scheduler :: Scheduler.SCHEDULING | eff) Unit
-main :: forall eff. Eff ( tty :: Display.TTY
-                        , scheduling :: Scheduler.SCHEDULING
-                        , console :: CONSOLE
-                        , rotrng :: Random.RNG
-                        | eff
-                        ) Unit
-main = do
+import Signal (foldp, runSignal, sampleOn, Signal(), dropRepeats)
+import Signal.DOM (animationFrame, keyPressed)
+
+leftKeyCode = 37
+upKeyCode = 38
+rightKeyCode = 39
+downKeyCode = 40
+
+type Player = {
+  x :: Int,
+  y :: Int
+}
+
+type GameState = {
+  turnCount :: Int,
+  player :: Player,
+  level :: MapGen.Map
+}
+
+type Delta = {x :: Int, y :: Int}
+
+movePlayer delta player = {x: player.x + delta.x, y: player.y + delta.y}
+
+gameLogic :: Delta -> Eff _ GameState -> Eff _ GameState
+gameLogic delta gameState = do
+  state <- gameState
+  pure (state {player = movePlayer delta state.player})
+
+calcDelta true _ _ _ = {x: -1, y: 0}
+calcDelta _ true _ _ = {x: 1, y: 0}
+calcDelta _ _ true _ = {x: 0, y: -1}
+calcDelta _ _ _ true = {x: 0, y: 1}
+calcDelta _ _ _ _ = {x: 0, y: 0}
+
+main :: Eff _ Unit
+main = UI.onDOMContentLoaded do
   Random.setSeed 1
   display <- Display.initDisplay (  Display.width := 40
-                                <>  Display.height := 40)
-  schedule <- Scheduler.mkActionScheduler
+                                 <>  Display.height := 40)
   map <- MapGen.digger 30 30 (MapGen.roomWidth := [2, 5])
-  render display map
-  Display.draw display {x: 10, y: 20} "@" "#fff"
-  Scheduler.add schedule {id: 1, speed: 100} true
-
-  
--- loop schedule cycle = do
---   out <- Scheduler.next schedule
---   time <- Scheduler.getTime schedule
---   Scheduler.setDuration schedule (if cycle == 3 then 5 else 1)
---   log $ "At cycle: " <> (show cycle) <> ": ID= " <> (show (out.id)) <> "(time is " <> (show time) <> ")"
-
- -- render :: forall t.  Display.Display
- --                      -> Array Int
- --                      -> Int
- --                      -> Int
- --                      -> Eff ( tty :: Display.TTY | t) Unit
-render display map = do
-  let xsize = map.width
-      ysize = map.height
-  forE 0 xsize $ \x -> forE 0 ysize $ \y ->
-      let val = map.grid !! (x * ysize + y) in
-        case val of
-          Nothing -> pure unit
-          Just 0 -> Display.draw display {x: x, y: y} "." "#fff"
-          Just 1 -> Display.draw display {x: x, y: y} "#" "#fff"
-          Just v -> Display.draw display {x: x, y: y} (show v) "#f00"
+  frames <- animationFrame
+  leftInput <- dropRepeats <$> keyPressed leftKeyCode
+  rightInput <- dropRepeats <$> keyPressed rightKeyCode
+  upInput <- dropRepeats <$> keyPressed upKeyCode
+  downInput <- dropRepeats <$> keyPressed downKeyCode
+  let delta = calcDelta <$> leftInput <*> rightInput <*> upInput <*> downInput
+      game = foldp gameLogic initialState delta
+      render gameStateE = do
+        gameState <- gameStateE
+        UI.renderMap display gameState.level
+        UI.renderPlayer display gameState.player
+      initialState = pure {
+        turnCount: 0,
+        player: {
+          x: 10,
+          y: 10
+        },
+        level: map
+      }
+  runSignal (render <$> game)
