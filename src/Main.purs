@@ -38,6 +38,8 @@ type Delta = {x :: Int, y :: Int}
 movePlayer :: Delta -> Player -> Player
 movePlayer delta player = {x: player.x + delta.x, y: player.y + delta.y}
 
+
+
 gameLogic :: Delta -> Eff _ GameState -> Eff _ GameState
 gameLogic delta gameState = do
   state <- gameState
