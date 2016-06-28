@@ -1,8 +1,6 @@
 module RotJS.FOV (FOV, TransparencyMap, TransparencyCell, VisibilityMap, VisibilityCell, preciseShadowCast, recursiveShadowCast, compute) where
 
-
-import Prelude
-import Data.Function.Uncurried (Fn4, runFn4, Fn2, runFn2)
+import Data.Function.Uncurried (Fn4, runFn4)
 
 foreign import data FOV :: *
 

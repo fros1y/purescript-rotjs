@@ -1,6 +1,4 @@
 module RotJS.Path where
-
-import Prelude
 import Data.Function.Uncurried (Fn3, runFn3)
 
 type TraversableCell = Boolean

@@ -14,12 +14,11 @@ module RotJS.Map  ( arena
                   , Map
                   ) where
 
-import Prelude
+
 import Control.Monad.Eff (Eff)
 import Data.Function.Uncurried (Fn3, runFn3, Fn2, runFn2)
-import Data.Options (Option(), Options(), optional, options, opt, (:=))
+import Data.Options (Option(), Options(), options, opt, (:=))
 import RotJS.RNG as Random
-import Data.Maybe (Maybe(..))
 import Data.Foreign (Foreign())
 
 type Door = {x :: Int, y :: Int }
