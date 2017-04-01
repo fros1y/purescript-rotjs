@@ -17,10 +17,10 @@
   ],
   "dependencies": {
     "rot.js": "^0.5.0",
-    "purescript-base": "^3.0.0",
+    "purescript-prelude": "^3.0.0",
     "purescript-functions": "^3.0.0",
     "purescript-arrays": "^4.0.0",
-    "purescript-options": "^1.0.0",
+    "purescript-options": "^2.0.0",
     "purescript-foreign": "^4.0.0",
     "purescript-eff": "^3.0.0"
   },

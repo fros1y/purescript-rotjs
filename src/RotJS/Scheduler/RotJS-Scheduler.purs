@@ -18,12 +18,12 @@ module RotJS.Scheduler (
     )  where
 
 import Prelude
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Data.Function.Uncurried (Fn2, runFn2, Fn3, runFn3)
 
 -- | `Scheduling` effect denotes computations which manipulate the ROT.js Scheduler`
-foreign import data SCHEDULING :: !
-foreign import data SchedulerObject :: *
+foreign import data SCHEDULING :: Effect
+foreign import data SchedulerObject :: Type
 
 data SimpleScheduler = SimpleScheduler SchedulerObject
 data ActionScheduler = ActionScheduler SchedulerObject

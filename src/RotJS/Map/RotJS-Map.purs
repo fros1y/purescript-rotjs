@@ -57,7 +57,7 @@ foreign import buildRogueRaw :: forall eff. Fn2 Int Int (Eff (rotrng :: Random.R
 -- dugPercentage – algorithm stops after this fraction of map area has been dug out; default = 0.2
 -- timeLimit – algorithm stops after this amount of milliseconds has passed
 
-foreign import data MapGenConfig :: *
+foreign import data MapGenConfig :: Type
 
 roomWidth :: Option MapGenConfig (Array Int)
 roomWidth = opt "roomWidth"
