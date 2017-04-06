@@ -19,7 +19,7 @@ module RotJS.Display (
 import Prelude
 import Control.Monad.Eff (Eff, kind Effect)
 import Data.Function.Uncurried (Fn4, runFn4, Fn2, runFn2)
-import Data.Options (Option(), Options(), options, opt, (:=))
+import Data.Options (Option(), Options(), options, opt)
 import Data.Foreign (Foreign())
 
 -- | `TTY` effect denotes computations which manipulate the ROT.js Display`

@@ -17,7 +17,7 @@ module RotJS.Map  ( arena
 
 import Control.Monad.Eff (Eff)
 import Data.Function.Uncurried (Fn3, runFn3, Fn2, runFn2)
-import Data.Options (Option(), Options(), options, opt, (:=))
+import Data.Options (Option(), Options(), options, opt)
 import RotJS.RNG as Random
 import Data.Foreign (Foreign())
 
