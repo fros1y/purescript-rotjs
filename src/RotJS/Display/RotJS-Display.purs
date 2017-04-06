@@ -17,17 +17,17 @@ module RotJS.Display (
   ) where
 
 import Prelude
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Data.Function.Uncurried (Fn4, runFn4, Fn2, runFn2)
-import Data.Options (Option(), Options(), options, opt, (:=))
+import Data.Options (Option(), Options(), options, opt)
 import Data.Foreign (Foreign())
 
 -- | `TTY` effect denotes computations which manipulate the ROT.js Display`
-foreign import data TTY :: !
+foreign import data TTY :: Effect
 
 -- | ROT.js display context
-foreign import data Display :: *
-foreign import data DisplayConfig :: *
+foreign import data Display :: Type
+foreign import data DisplayConfig :: Type
 
 type Coord = {x :: Int, y :: Int}
 type Color = String

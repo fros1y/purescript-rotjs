@@ -17,15 +17,15 @@
   ],
   "dependencies": {
     "rot.js": "^0.5.0",
-    "purescript-base": "^1.0.0",
-    "purescript-functions": "^1.0.0",
-    "purescript-arrays": "^1.0.0",
-    "purescript-options": "^1.0.0",
-    "purescript-foreign": "^1.0.0",
-    "purescript-eff": "^1.0.0"
+    "purescript-prelude": "^3.0.0",
+    "purescript-functions": "^3.0.0",
+    "purescript-arrays": "^4.0.0",
+    "purescript-options": "^3.0.0",
+    "purescript-foreign": "^4.0.0",
+    "purescript-eff": "^3.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^1.0.0"
+    "purescript-psci-support": "^3.0.0"
   },
-  "version": "0.0.1"
+  "version": "0.1.0"
 }

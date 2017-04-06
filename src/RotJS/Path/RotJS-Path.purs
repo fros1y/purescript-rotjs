@@ -11,7 +11,7 @@ type TraversableMap = {  width :: Int,
 type Coord = {x :: Int, y :: Int}
 type Path = Array Coord
 
-foreign import data PathGen :: *
+foreign import data PathGen :: Type
 
 foreign import dijkstraRaw :: Fn3 TraversableMap
                                   Int

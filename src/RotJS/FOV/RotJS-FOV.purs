@@ -2,7 +2,7 @@ module RotJS.FOV (FOV, TransparencyMap, TransparencyCell, VisibilityMap, Visibil
 
 import Data.Function.Uncurried (Fn4, runFn4)
 
-foreign import data FOV :: *
+foreign import data FOV :: Type
 
 type TransparencyCell = Boolean
 type VisibilityCell = Boolean

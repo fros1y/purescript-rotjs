@@ -17,7 +17,7 @@ module RotJS.Map  ( arena
 
 import Control.Monad.Eff (Eff)
 import Data.Function.Uncurried (Fn3, runFn3, Fn2, runFn2)
-import Data.Options (Option(), Options(), options, opt, (:=))
+import Data.Options (Option(), Options(), options, opt)
 import RotJS.RNG as Random
 import Data.Foreign (Foreign())
 
@@ -57,7 +57,7 @@ foreign import buildRogueRaw :: forall eff. Fn2 Int Int (Eff (rotrng :: Random.R
 -- dugPercentage – algorithm stops after this fraction of map area has been dug out; default = 0.2
 -- timeLimit – algorithm stops after this amount of milliseconds has passed
 
-foreign import data MapGenConfig :: *
+foreign import data MapGenConfig :: Type
 
 roomWidth :: Option MapGenConfig (Array Int)
 roomWidth = opt "roomWidth"

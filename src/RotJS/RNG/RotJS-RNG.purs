@@ -7,12 +7,12 @@ module RotJS.RNG  ( RNG
                   ) where
 
 import Prelude
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
 import Data.Function.Uncurried (Fn2, runFn2)
 
 
 -- | `RNG` effect denotes computations which manipulate the ROT.js RNG`
-foreign import data RNG :: !
+foreign import data RNG :: Effect
 
 foreign import setSeed :: forall eff. Int -> Eff (rotrng :: RNG | eff) Unit
 foreign import getSeed :: forall eff. Eff (rotrng :: RNG | eff) Int
